@@ -334,10 +334,10 @@ public class BattleScript {
                     """, trainer.getTrainer(), strCount);
 
                 for (int i1 = 0; i1 < Roster.size(); i1++) {
-                    System.out.printf("[%d] %s | HP: %d | Moves: %s, %s, | Type: %s\n",i1,
+                    System.out.printf("[%d] %s | HP: %d | Moves: %s, %s, | Type: %s | Description: %s | Level: %d\n",i1,
                             Roster.get(i1).getPocketMonster(),Roster.get(i1).getHP(),
                             Roster.get(i1).getMoveset().get(0).getMoves(),Roster.get(i1).getMoveset().get(1).getMoves(),
-                            Roster.get(i1).getType());
+                            Roster.get(i1).getType(),Roster.get(i1).getDescription(),Roster.get(i1).getLevel());
                 }
 
                 if (scanner.hasNextInt()) {
@@ -516,18 +516,25 @@ public class BattleScript {
     private static ArrayList<PocketMonsters> initializeRoster(){
         ArrayList<PocketMonsters> Roster = new ArrayList<>();
 
-        Roster.add(createMonster("Chikapu",95,"Electric","Thunderbolt",21,0.90,
-                "Electric","Tackle",12,1.0,"Normal"));
-        Roster.add(createMonster("MewThree",100,"Psychic","Shadow Ball",22,1.0,
-                "Ghost","Psychic",18,0.90,"Psychic"));
-        Roster.add(createMonster("Lizchar",110,"Fire","Fire Blast",22,0.85,
-                "Fire","Fly",14,0.95,"Flying"));
-        Roster.add(createMonster("Monsieur Mime",86,"Psychic","Psybeam",20,1.0,
-                "Psychic","Sucker Punch",12,1.0,"Dark"));
-        Roster.add(createMonster("Scytickle",90,"Bug","Pin Missile",18,0.85,
-                "Bug","Skitter Smack",14,0.90,"Bug"));
-        Roster.add(createMonster("Phandread",88,"Ghost","Night Shade",19,1.0,
-                "Ghost","Lick",17,0.95,"Ghost"));
+        Roster.add(createMonster("Chikapu",95,"Electric","Thunderbolt",21,
+                0.90, "Electric","Tackle",12,1.0,
+                "Normal", "Small and agile electric-mouse PocketMonster",12));
+        Roster.add(createMonster("MewThree",100,"Psychic","Shadow Ball",22,
+                1.0, "Ghost","Psychic",18,0.90,
+                "Psychic", "Ultimate lifeform lab-created psychic PocketMonster",
+                40));
+        Roster.add(createMonster("Lizchar",110,"Fire","Fire Blast",22,
+                0.85, "Fire","Fly",14,0.95,
+                "Flying","Winged fire-breathing dragon PocketMonster", 35));
+        Roster.add(createMonster("Monsieur Mime",86,"Psychic","Psybeam",20,
+                1.0, "Psychic","Sucker Punch",12,1.0,
+                "Dark","Psychic humanoid mime PocketMonster",22));
+        Roster.add(createMonster("Scytickle",90,"Bug","Pin Missile",18,
+                0.85, "Bug","Skitter Smack",14,0.90,
+                "Bug","Dual-arm blade bug PocketMonster",15));
+        Roster.add(createMonster("Phandread",88,"Ghost","Night Shade",19,
+                1.0, "Ghost","Lick",17,0.95,
+                "Ghost","Eerie translucent ghost PocketMonster",30));
 
         return Roster;
     }
@@ -535,7 +542,7 @@ public class BattleScript {
     private static PocketMonsters createMonster(String name, int hp, String type, String move1Name, int move1Damage,
                                                 double move1Accuracy, String move1Type,
                                                 String move2Name, int move2Damage, double move2Accuracy,
-                                                String move2Type) {
+                                                String move2Type,String monsterDescription, int monsterLevel) {
 
         ArrayList<Moves> moves = new ArrayList<>();
 
@@ -546,7 +553,7 @@ public class BattleScript {
         moves.add(m1);
         moves.add(m2);
 
-        return new PocketMonsters(name,hp,type,moves);
+        return new PocketMonsters(name,hp,type,moves,monsterDescription,monsterLevel);
     }
 
     private static void endProgram(Trainers trainer1, Trainers trainer2, String strWinner,Scanner scanner){
