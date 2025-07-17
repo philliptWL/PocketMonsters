@@ -9,8 +9,8 @@ public class BattleScript {
     private static final int supereffective = 2;
 
     public static void startBattle(Trainers trainer1, Trainers trainer2, Scanner scanner) {
-        selectTeam(trainer1, scanner, initializeRoster());
-        selectTeam(trainer2, scanner, initializeRoster());
+        selectTeam(trainer1, scanner, initializeRoster(scanner,trainer1));
+        selectTeam(trainer2, scanner, initializeRoster(scanner,trainer2));
 
         String strWinner = "";
 
@@ -194,6 +194,9 @@ public class BattleScript {
             case "Bug":
                 isSuperEffective = compareType.equals("Psychic") || compareType.equals("Dark")
                         || compareType.equals("Grass");
+                break;
+            case "Water":
+                isSuperEffective = compareType.equals("Fire") || compareType.equals("Rock");
                 break;
             default:
                 break;
@@ -513,7 +516,7 @@ public class BattleScript {
         }
     }
 
-    private static ArrayList<PocketMonsters> initializeRoster(){
+    private static ArrayList<PocketMonsters> initializeRoster(Scanner scanner, Trainers trainers){
         ArrayList<PocketMonsters> Roster = new ArrayList<>();
 
         Roster.add(createMonster("Chikapu",95,"Electric","Thunderbolt",21,
@@ -535,8 +538,158 @@ public class BattleScript {
         Roster.add(createMonster("Phandread",88,"Ghost","Night Shade",19,
                 1.0, "Ghost","Lick",17,0.95,
                 "Ghost","Eerie translucent ghost PocketMonster",30));
+        customPocketMonster(scanner, Roster, trainers);
 
         return Roster;
+    }
+
+    private static void customPocketMonster(Scanner scanner, ArrayList<PocketMonsters> Roster, Trainers trainers) {
+        int menuInput;
+        System.out.printf("""
+                            %s, Would you like to create your own Pocket Monster?
+                            
+                            [1] Yes
+                            [2] No
+                            
+                            """, trainers.getTrainer());
+
+        menuInput = scanner.nextInt();
+        scanner.nextLine();
+
+        if(menuInput == 1){
+            String name = "", type = "", move1Name = "", move1Type = "", move2Name = "", move2Type = "",
+                    monsterDescription = "";
+            int hp = 0, move1Damage = 0, move2Damage = 0, monsterLevel = 0;
+            double move1Accuracy = 0, move2Accuracy = 0;
+
+            System.out.printf("\n%s, please enter a name for your Pocket Monster: \n",trainers.getTrainer());
+
+            while(name.trim().isEmpty()){
+                name = scanner.nextLine();
+            }
+
+            System.out.printf("""
+                    %s, select a element type and moveset:
+                    
+                    [1] Electric | Moves: Thunder, Headbutt
+                    [2] Psychic | Moves: Psychic, Fake-Out
+                    [3] Fire | Moves: Fire Blast, Tackle
+                    [4] Water | Moves: Hydro Pump, Swift
+                    [5] Grass | Moves: Razor Leaf, Vine Whip
+                    [6] Bug | Moves: Pin Missile, Fly
+                    [7] Ghost | Moves: Night Shade, Haunt
+                    
+                    """,trainers.getTrainer());
+
+            menuInput = scanner.nextInt();
+            scanner.nextLine();
+
+            while(type.isEmpty()) {
+                switch (menuInput) {
+                    case 1:
+                        type = "Electric";
+                        move1Name = "Thunder";
+                        move1Damage = 25;
+                        move1Accuracy = 0.8;
+                        move1Type = "Electric";
+                        move2Name = "Headbutt";
+                        move2Damage = 10;
+                        move2Accuracy = 0.95;
+                        move2Type = "Normal";
+                        hp = 90;
+                        break;
+                    case 2:
+                        type = "Psychic";
+                        move1Name = "Psychic";
+                        move1Damage = 18;
+                        move1Accuracy = 0.9;
+                        move1Type = "Psychic";
+                        move2Name = "Fake-Out";
+                        move2Damage = 15;
+                        move2Accuracy = 0.95;
+                        move2Type = "Dark";
+                        hp = 100;
+                        break;
+                    case 3:
+                        type = "Fire";
+                        move1Name = "Fire Blast";
+                        move1Damage = 22;
+                        move1Accuracy = 0.85;
+                        move1Type = "Fire";
+                        move2Name = "Tackle";
+                        move2Damage = 12;
+                        move2Accuracy = 1.0;
+                        move2Type = "Normal";
+                        hp = 105;
+                        break;
+                    case 4:
+                        type = "Water";
+                        move1Name = "Hydro Pump";
+                        move1Damage = 25;
+                        move1Accuracy = 0.8;
+                        move1Type = "Water";
+                        move2Name = "Swift";
+                        move2Damage = 17;
+                        move2Accuracy = 1.0;
+                        move2Type = "Normal";
+                        hp = 95;
+                        break;
+                    case 5:
+                        type = "Grass";
+                        move1Name = "Razor Leaf";
+                        move1Damage = 20;
+                        move1Accuracy = 0.9;
+                        move1Type = "Grass";
+                        move2Name = "Vine Whip";
+                        move2Damage = 18;
+                        move2Accuracy = 0.95;
+                        move2Type = "Grass";
+                        hp = 85;
+                        break;
+                    case 6:
+                        type = "Bug";
+                        move1Name = "Pin Missile";
+                        move1Damage = 18;
+                        move1Accuracy = 0.85;
+                        move1Type = "Bug";
+                        move2Name = "Fly";
+                        move2Damage = 14;
+                        move2Accuracy = 0.95;
+                        move2Type = "Fly";
+                        hp = 88;
+                        break;
+                    case 7:
+                        type = "Ghost";
+                        move1Name = "Night Shade";
+                        move1Damage = 19;
+                        move1Accuracy = 1.0;
+                        move1Type = "Ghost";
+                        move2Name = "Haunt";
+                        move2Damage = 16;
+                        move2Accuracy = 0.95;
+                        move2Type = "Ghost";
+                        hp = 86;
+                        break;
+                    default:
+                        System.out.println("\nPlease enter a number 1-7.\n");
+                }
+            }
+            while (monsterDescription.trim().isEmpty()){
+                System.out.printf("\n%s, please enter a description of your Pocket Monster: \n",trainers.getTrainer());
+                monsterDescription = scanner.nextLine();
+            }
+            while(monsterLevel == 0){
+                System.out.printf("\n%s, enter a level for your Pocket Monster between 5 and 40: \n",
+                        trainers.getTrainer());
+                int level = scanner.nextInt();
+                scanner.nextLine();
+                if (level > 5 && level < 40){
+                    monsterLevel = level;
+                }
+            }
+            Roster.add(createMonster(name,hp,type,move1Name,move1Damage,move1Accuracy,move1Type,move2Name,move2Damage,
+                    move2Accuracy,move2Type,monsterDescription,monsterLevel));
+        }
     }
 
     private static PocketMonsters createMonster(String name, int hp, String type, String move1Name, int move1Damage,
